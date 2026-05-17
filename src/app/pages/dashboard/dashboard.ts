@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from '../../services/auth';
@@ -13,10 +13,10 @@ import { Task, TaskService } from '../../services/task';
 })
 export class Dashboard implements OnInit {
 
-  tasks = signal<Task[]>([]);
+  tasks: Task[] = [];
   newTaskTitle = '';
-  message = signal('');
-  errorMessage = signal('');
+  message = '';
+  errorMessage = '';
 
   constructor(
     private taskService: TaskService,
@@ -34,11 +34,11 @@ export class Dashboard implements OnInit {
 
     this.taskService.getTasks().subscribe({
       next: (response) => {
-        this.tasks.set(this.getTaskList(response));
-        this.errorMessage.set('');
+        this.tasks = this.getTaskList(response);
+        this.errorMessage = '';
       },
       error: (error) => {
-        this.errorMessage.set(error.error?.message || 'Could not load tasks');
+        this.errorMessage = error.error?.message || 'Could not load tasks';
       }
     });
 
@@ -58,12 +58,12 @@ export class Dashboard implements OnInit {
       next: () => {
         this.getTasks();
         this.newTaskTitle = '';
-        this.message.set('Task created');
-        this.errorMessage.set('');
+        this.message = 'Task created';
+        this.errorMessage = '';
       },
       error: (error) => {
-        this.message.set('');
-        this.errorMessage.set(error.error?.message || 'Could not create task');
+        this.message = '';
+        this.errorMessage = error.error?.message || 'Could not create task';
       }
     });
 
@@ -74,7 +74,7 @@ export class Dashboard implements OnInit {
     const taskId = this.getTaskId(task);
 
     if (!taskId) {
-      this.errorMessage.set('Task id is missing');
+      this.errorMessage = 'Task id is missing';
       return;
     }
 
@@ -87,25 +87,23 @@ export class Dashboard implements OnInit {
         const savedTask = response.task || response;
         const completed = savedTask.completed ?? updatedTask.completed;
 
-        this.tasks.update((tasks) => {
-          return tasks.map((currentTask) => {
-            if (this.getTaskId(currentTask) === taskId) {
-              return {
-                ...currentTask,
-                completed
-              };
-            }
+        this.tasks = this.tasks.map((currentTask) => {
+          if (this.getTaskId(currentTask) === taskId) {
+            return {
+              ...currentTask,
+              completed
+            };
+          }
 
-            return currentTask;
-          });
+          return currentTask;
         });
 
-        this.message.set('Task updated');
-        this.errorMessage.set('');
+        this.message = 'Task updated';
+        this.errorMessage = '';
       },
       error: (error) => {
-        this.message.set('');
-        this.errorMessage.set(error.error?.message || 'Could not update task');
+        this.message = '';
+        this.errorMessage = error.error?.message || 'Could not update task';
       }
     });
 
@@ -116,22 +114,20 @@ export class Dashboard implements OnInit {
     const taskId = this.getTaskId(task);
 
     if (!taskId) {
-      this.errorMessage.set('Task id is missing');
+      this.errorMessage = 'Task id is missing';
       return;
     }
 
     this.taskService.deleteTask(taskId).subscribe({
       next: () => {
-        this.tasks.update((tasks) => {
-          return tasks.filter((currentTask) => this.getTaskId(currentTask) !== taskId);
-        });
+        this.tasks = this.tasks.filter((currentTask) => this.getTaskId(currentTask) !== taskId);
 
-        this.message.set('Task deleted');
-        this.errorMessage.set('');
+        this.message = 'Task deleted';
+        this.errorMessage = '';
       },
       error: (error) => {
-        this.message.set('');
-        this.errorMessage.set(error.error?.message || 'Could not delete task');
+        this.message = '';
+        this.errorMessage = error.error?.message || 'Could not delete task';
       }
     });
 

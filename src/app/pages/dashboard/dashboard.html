@@ -4,8 +4,8 @@
     <button type="button" (click)="logout()">Logout</button>
   </header>
 
-  <p class="message" *ngIf="message()">{{ message() }}</p>
-  <p class="error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+  <p class="message" *ngIf="message">{{ message }}</p>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
   <form class="task-form" (ngSubmit)="createTask()">
     <input
@@ -17,10 +17,10 @@
     <button type="submit">Add Task</button>
   </form>
 
-  <p *ngIf="tasks().length === 0">No tasks yet.</p>
+  <p *ngIf="tasks.length === 0">No tasks yet.</p>
 
-  <ul class="task-list" *ngIf="tasks().length > 0">
-    <li *ngFor="let task of tasks()" class="task-item">
+  <ul class="task-list" *ngIf="tasks.length > 0">
+    <li *ngFor="let task of tasks" class="task-item">
       <label>
         <input
           type="checkbox"
