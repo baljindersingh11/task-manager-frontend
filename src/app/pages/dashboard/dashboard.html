@@ -1,1 +1,38 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+  <header class="dashboard-header">
+    <h2>My Tasks</h2>
+    <button type="button" (click)="logout()">Logout</button>
+  </header>
+
+  <p class="message" *ngIf="message()">{{ message() }}</p>
+  <p class="error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+
+  <form class="task-form" (ngSubmit)="createTask()">
+    <input
+      type="text"
+      placeholder="Enter a new task"
+      [(ngModel)]="newTaskTitle"
+      name="newTaskTitle"
+    >
+    <button type="submit">Add Task</button>
+  </form>
+
+  <p *ngIf="tasks().length === 0">No tasks yet.</p>
+
+  <ul class="task-list" *ngIf="tasks().length > 0">
+    <li *ngFor="let task of tasks()" class="task-item">
+      <label>
+        <input
+          type="checkbox"
+          [checked]="task.completed"
+          (change)="toggleTask(task)"
+        >
+        <span [class.completed]="task.completed">{{ task.title }}</span>
+      </label>
+
+      <button type="button" class="delete-button" (click)="deleteTask(task)">
+        Delete
+      </button>
+    </li>
+  </ul>
+</div>
