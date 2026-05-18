@@ -13,25 +13,35 @@
       placeholder="Enter a new task"
       [(ngModel)]="newTaskTitle"
       name="newTaskTitle"
+      required
     >
-    <button type="submit">Add Task</button>
+    <button type="submit" [disabled]="isCreatingTask">
+      {{ isCreatingTask ? 'Adding...' : 'Add Task' }}
+    </button>
   </form>
 
-  <p *ngIf="tasks.length === 0">No tasks yet.</p>
+  <p *ngIf="isLoadingTasks">Loading tasks...</p>
+  <p *ngIf="!isLoadingTasks && tasks.length === 0">No tasks yet.</p>
 
-  <ul class="task-list" *ngIf="tasks.length > 0">
+  <ul class="task-list" *ngIf="!isLoadingTasks && tasks.length > 0">
     <li *ngFor="let task of tasks" class="task-item">
       <label>
         <input
           type="checkbox"
           [checked]="task.completed"
+          [disabled]="updatingTaskId === getTaskId(task) || deletingTaskId === getTaskId(task)"
           (change)="toggleTask(task)"
         >
         <span [class.completed]="task.completed">{{ task.title }}</span>
       </label>
 
-      <button type="button" class="delete-button" (click)="deleteTask(task)">
-        Delete
+      <button
+        type="button"
+        class="delete-button"
+        [disabled]="deletingTaskId === getTaskId(task)"
+        (click)="deleteTask(task)"
+      >
+        {{ deletingTaskId === getTaskId(task) ? 'Deleting...' : 'Delete' }}
       </button>
     </li>
   </ul>

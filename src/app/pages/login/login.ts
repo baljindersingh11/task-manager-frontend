@@ -16,10 +16,21 @@ export class Login {
   password = '';
   message = '';
   errorMessage = '';
+  isLoading = false;
 
   constructor(private auth: Auth, private router: Router) {}
 
   onLogin() {
+
+    if (!this.email.trim() || !this.password.trim()) {
+      this.message = '';
+      this.errorMessage = 'Please enter email and password';
+      return;
+    }
+
+    this.isLoading = true;
+    this.message = '';
+    this.errorMessage = '';
 
     const credentials = {
       email: this.email,
@@ -28,6 +39,7 @@ export class Login {
 
     this.auth.login(credentials).subscribe({
       next: (response) => {
+        this.isLoading = false;
         this.auth.saveToken(response.token);
         this.message = response.message;
         this.errorMessage = '';
@@ -35,6 +47,7 @@ export class Login {
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
+        this.isLoading = false;
         this.message = '';
         this.errorMessage = error.error?.message || 'Login failed';
       }

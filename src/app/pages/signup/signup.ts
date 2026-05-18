@@ -17,10 +17,21 @@ export class Signup {
   password = '';
   message = '';
   errorMessage = '';
+  isLoading = false;
 
   constructor(private auth: Auth, private router: Router) {}
 
   onSignup() {
+
+    if (!this.name.trim() || !this.email.trim() || !this.password.trim()) {
+      this.message = '';
+      this.errorMessage = 'Please fill in name, email, and password';
+      return;
+    }
+
+    this.isLoading = true;
+    this.message = '';
+    this.errorMessage = '';
 
     const userData = {
       name: this.name,
@@ -30,6 +41,7 @@ export class Signup {
 
     this.auth.signup(userData).subscribe({
       next: (response: any) => {
+        this.isLoading = false;
         this.message = response.message;
         this.errorMessage = '';
 
@@ -38,6 +50,7 @@ export class Signup {
         }, 1000);
       },
       error: (error) => {
+        this.isLoading = false;
         this.message = '';
         this.errorMessage = error.error?.message || 'Signup failed';
       }
