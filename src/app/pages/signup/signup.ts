@@ -17,15 +17,34 @@ export class Signup {
   password = '';
   message = '';
   errorMessage = '';
+  nameError = '';
+  emailError = '';
+  passwordError = '';
   isLoading = false;
 
   constructor(private auth: Auth, private router: Router) {}
 
   onSignup() {
 
-    if (!this.name.trim() || !this.email.trim() || !this.password.trim()) {
+    this.nameError = '';
+    this.emailError = '';
+    this.passwordError = '';
+
+    if (!this.name.trim()) {
+      this.nameError = 'Name is required';
+    }
+
+    if (!this.email.trim()) {
+      this.emailError = 'Email is required';
+    }
+
+    if (!this.password.trim()) {
+      this.passwordError = 'Password is required';
+    }
+
+    if (this.nameError || this.emailError || this.passwordError) {
       this.message = '';
-      this.errorMessage = 'Please fill in name, email, and password';
+      this.errorMessage = 'Please fix the highlighted fields';
       return;
     }
 

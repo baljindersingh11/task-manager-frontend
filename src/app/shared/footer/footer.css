@@ -1,0 +1,11 @@
+.app-footer {
+  padding: 18px 24px;
+  color: #5c6773;
+  text-align: center;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+}
+
+.app-footer p {
+  margin: 0;
+}

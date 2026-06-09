@@ -1,27 +1,39 @@
 <div class="dashboard">
   <header class="dashboard-header">
-    <h2>My Tasks</h2>
-    <button type="button" (click)="logout()">Logout</button>
+    <div>
+      <p class="eyebrow">Task Manager</p>
+      <h2>My Tasks</h2>
+    </div>
   </header>
 
   <p class="message" *ngIf="message">{{ message }}</p>
   <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
   <form class="task-form" (ngSubmit)="createTask()">
-    <input
-      type="text"
-      placeholder="Enter a new task"
-      [(ngModel)]="newTaskTitle"
-      name="newTaskTitle"
-      required
-    >
+    <div class="task-input-group">
+      <label for="taskTitle">New task</label>
+      <input
+        id="taskTitle"
+        type="text"
+        placeholder="Enter a new task"
+        [(ngModel)]="newTaskTitle"
+        name="newTaskTitle"
+        required
+      >
+      <small class="field-error" *ngIf="titleError">{{ titleError }}</small>
+    </div>
+
     <button type="submit" [disabled]="isCreatingTask">
       {{ isCreatingTask ? 'Adding...' : 'Add Task' }}
     </button>
   </form>
 
-  <p *ngIf="isLoadingTasks">Loading tasks...</p>
-  <p *ngIf="!isLoadingTasks && tasks.length === 0">No tasks yet.</p>
+  <p class="loading" *ngIf="isLoadingTasks">Loading tasks...</p>
+
+  <div class="empty-state" *ngIf="!isLoadingTasks && tasks.length === 0">
+    <h3>No tasks yet</h3>
+    <p>Add your first task above to start organizing your day.</p>
+  </div>
 
   <ul class="task-list" *ngIf="!isLoadingTasks && tasks.length > 0">
     <li *ngFor="let task of tasks" class="task-item">

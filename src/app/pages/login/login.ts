@@ -16,15 +16,28 @@ export class Login {
   password = '';
   message = '';
   errorMessage = '';
+  emailError = '';
+  passwordError = '';
   isLoading = false;
 
   constructor(private auth: Auth, private router: Router) {}
 
   onLogin() {
 
-    if (!this.email.trim() || !this.password.trim()) {
+    this.emailError = '';
+    this.passwordError = '';
+
+    if (!this.email.trim()) {
+      this.emailError = 'Email is required';
+    }
+
+    if (!this.password.trim()) {
+      this.passwordError = 'Password is required';
+    }
+
+    if (this.emailError || this.passwordError) {
       this.message = '';
-      this.errorMessage = 'Please enter email and password';
+      this.errorMessage = 'Please fix the highlighted fields';
       return;
     }
 

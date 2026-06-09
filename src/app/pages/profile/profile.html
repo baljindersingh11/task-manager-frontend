@@ -1,0 +1,21 @@
+<section class="profile-page">
+  <div class="profile-card">
+    <p class="eyebrow">Account</p>
+    <h1>My Profile</h1>
+
+    <p class="status" *ngIf="isLoading">Loading profile...</p>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="profile-details" *ngIf="profile && !isLoading">
+      <div>
+        <span>Name</span>
+        <strong>{{ profile.name }}</strong>
+      </div>
+
+      <div>
+        <span>Email</span>
+        <strong>{{ profile.email }}</strong>
+      </div>
+    </div>
+  </div>
+</section>

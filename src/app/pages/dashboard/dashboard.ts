@@ -18,6 +18,7 @@ export class Dashboard implements OnInit {
   newTaskTitle = '';
   message = '';
   errorMessage = '';
+  titleError = '';
   isLoadingTasks = false;
   isCreatingTask = false;
   updatingTaskId = '';
@@ -59,8 +60,11 @@ export class Dashboard implements OnInit {
 
   createTask() {
 
+    this.titleError = '';
+
     if (!this.newTaskTitle.trim()) {
       this.message = '';
+      this.titleError = 'Task title is required';
       this.errorMessage = 'Please enter a task title';
       return;
     }
@@ -78,6 +82,7 @@ export class Dashboard implements OnInit {
         this.isCreatingTask = false;
         this.getTasks();
         this.newTaskTitle = '';
+        this.titleError = '';
         this.message = 'Task created';
         this.errorMessage = '';
       },
@@ -144,6 +149,12 @@ export class Dashboard implements OnInit {
     if (!taskId) {
       this.message = '';
       this.errorMessage = 'Task id is missing';
+      return;
+    }
+
+    const shouldDelete = confirm('Delete this task?');
+
+    if (!shouldDelete) {
       return;
     }
 
