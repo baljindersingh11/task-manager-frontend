@@ -42,13 +42,44 @@
 
   <p class="loading" *ngIf="isLoadingTasks">Loading tasks...</p>
 
+  <div class="filter-tabs" *ngIf="!isLoadingTasks && tasks.length > 0">
+    <button
+      type="button"
+      [class.active]="currentFilter === 'all'"
+      (click)="setFilter('all')"
+    >
+      All
+    </button>
+
+    <button
+      type="button"
+      [class.active]="currentFilter === 'pending'"
+      (click)="setFilter('pending')"
+    >
+      Pending
+    </button>
+
+    <button
+      type="button"
+      [class.active]="currentFilter === 'completed'"
+      (click)="setFilter('completed')"
+    >
+      Completed
+    </button>
+  </div>
+
   <div class="empty-state" *ngIf="!isLoadingTasks && tasks.length === 0">
     <h3>No tasks yet</h3>
     <p>Add your first task above to start organizing your day.</p>
   </div>
 
-  <ul class="task-list" *ngIf="!isLoadingTasks && tasks.length > 0">
-    <li *ngFor="let task of tasks" class="task-item">
+  <div class="empty-state" *ngIf="!isLoadingTasks && tasks.length > 0 && filteredTasks.length === 0">
+    <h3>No tasks found</h3>
+    <p>Try another filter.</p>
+  </div>
+
+  <ul class="task-list" *ngIf="!isLoadingTasks && filteredTasks.length > 0">
+    <li *ngFor="let task of filteredTasks" class="task-item">
       <label>
         <input
           type="checkbox"

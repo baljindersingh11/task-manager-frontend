@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 export interface Task {
   _id?: string;
@@ -16,7 +17,7 @@ export class TaskService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:5000/api/tasks';
+  private apiUrl = `${environment.apiUrl}/tasks`;
 
   getTasks() {
 

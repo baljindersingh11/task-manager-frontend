@@ -24,6 +24,7 @@ export class Dashboard implements OnInit {
   isCreatingTask = false;
   updatingTaskId = '';
   deletingTaskId = '';
+  currentFilter = 'all';
 
   constructor(
     private taskService: TaskService,
@@ -179,6 +180,26 @@ export class Dashboard implements OnInit {
         this.errorMessage = error.error?.message || 'Could not delete task';
       }
     });
+
+  }
+
+  get filteredTasks() {
+
+    if (this.currentFilter === 'pending') {
+      return this.tasks.filter((task) => !task.completed);
+    }
+
+    if (this.currentFilter === 'completed') {
+      return this.tasks.filter((task) => task.completed);
+    }
+
+    return this.tasks;
+
+  }
+
+  setFilter(filter: string) {
+
+    this.currentFilter = filter;
 
   }
 

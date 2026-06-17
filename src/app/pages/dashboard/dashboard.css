@@ -161,6 +161,24 @@ input:disabled {
   border-radius: 8px;
 }
 
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filter-tabs button {
+  background: white;
+  border-color: #c8ced8;
+  color: #1f2937;
+}
+
+.filter-tabs button.active {
+  background: #1f2937;
+  border-color: #1f2937;
+  color: white;
+}
+
 .empty-state h3 {
   margin: 0 0 6px;
   color: #1f2937;
@@ -197,6 +215,10 @@ input:disabled {
 
   .task-fields {
     grid-template-columns: 1fr;
+  }
+
+  .filter-tabs {
+    flex-direction: column;
   }
 
   button {
