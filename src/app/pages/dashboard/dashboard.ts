@@ -16,6 +16,7 @@ export class Dashboard implements OnInit {
 
   tasks: any[] = [];
   newTaskTitle = '';
+  newTaskDueDate = '';
   message = '';
   errorMessage = '';
   titleError = '';
@@ -74,7 +75,8 @@ export class Dashboard implements OnInit {
     this.errorMessage = '';
 
     const task = {
-      title: this.newTaskTitle.trim()
+      title: this.newTaskTitle.trim(),
+      dueDate: this.newTaskDueDate || undefined
     };
 
     this.taskService.createTask(task).subscribe({
@@ -82,6 +84,7 @@ export class Dashboard implements OnInit {
         this.isCreatingTask = false;
         this.getTasks();
         this.newTaskTitle = '';
+        this.newTaskDueDate = '';
         this.titleError = '';
         this.message = 'Task created';
         this.errorMessage = '';

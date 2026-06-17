@@ -6,6 +6,7 @@ export interface Task {
   id?: string;
   title: string;
   completed: boolean;
+  dueDate?: string | null;
 }
 
 @Injectable({
@@ -23,7 +24,7 @@ export class TaskService {
 
   }
 
-  createTask(task: { title: string }) {
+  createTask(task: { title: string; dueDate?: string }) {
 
     return this.http.post<any>(this.apiUrl, task);
 

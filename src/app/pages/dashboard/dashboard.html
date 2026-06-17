@@ -10,17 +10,29 @@
   <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
   <form class="task-form" (ngSubmit)="createTask()">
-    <div class="task-input-group">
-      <label for="taskTitle">New task</label>
-      <input
-        id="taskTitle"
-        type="text"
-        placeholder="Enter a new task"
-        [(ngModel)]="newTaskTitle"
-        name="newTaskTitle"
-        required
-      >
-      <small class="field-error" *ngIf="titleError">{{ titleError }}</small>
+    <div class="task-fields">
+      <div class="task-input-group">
+        <label for="taskTitle">New task</label>
+        <input
+          id="taskTitle"
+          type="text"
+          placeholder="Enter a new task"
+          [(ngModel)]="newTaskTitle"
+          name="newTaskTitle"
+          required
+        >
+        <small class="field-error" *ngIf="titleError">{{ titleError }}</small>
+      </div>
+
+      <div class="task-input-group">
+        <label for="taskDueDate">Due date (optional)</label>
+        <input
+          id="taskDueDate"
+          type="date"
+          [(ngModel)]="newTaskDueDate"
+          name="newTaskDueDate"
+        >
+      </div>
     </div>
 
     <button type="submit" [disabled]="isCreatingTask">
@@ -44,7 +56,12 @@
           [disabled]="updatingTaskId === getTaskId(task) || deletingTaskId === getTaskId(task)"
           (change)="toggleTask(task)"
         >
-        <span [class.completed]="task.completed">{{ task.title }}</span>
+        <span class="task-content">
+          <span [class.completed]="task.completed">{{ task.title }}</span>
+          <small *ngIf="task.dueDate">
+            Due: {{ task.dueDate | date:'mediumDate':'UTC' }}
+          </small>
+        </span>
       </label>
 
       <button

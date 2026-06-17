@@ -40,6 +40,12 @@ h2 {
   border-radius: 8px;
 }
 
+.task-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(170px, 220px);
+  gap: 12px;
+}
+
 .task-input-group {
   display: flex;
   flex-direction: column;
@@ -110,6 +116,16 @@ input:disabled {
   overflow-wrap: anywhere;
 }
 
+.task-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-content small {
+  color: #5c6773;
+}
+
 .completed {
   color: #666;
   text-decoration: line-through;
@@ -176,6 +192,10 @@ input:disabled {
   }
 
   .task-form {
+    grid-template-columns: 1fr;
+  }
+
+  .task-fields {
     grid-template-columns: 1fr;
   }
 
