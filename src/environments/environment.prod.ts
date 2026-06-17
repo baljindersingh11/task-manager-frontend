@@ -1,3 +1,4 @@
 export const environment = {
-  apiUrl: 'https://YOUR-RENDER-BACKEND-URL.onrender.com/api'
+  production: true,
+  apiUrl: 'https://task-manager-backend-h5o5.onrender.com/api'
 };
