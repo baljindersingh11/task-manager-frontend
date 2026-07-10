@@ -161,6 +161,32 @@ input:disabled {
   border-radius: 8px;
 }
 
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.stat-card {
+  padding: 14px;
+  background: #f8f9fb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.stat-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: #5c6773;
+  font-size: 13px;
+}
+
+.stat-card strong {
+  color: #1f2937;
+  font-size: 24px;
+}
+
 .filter-tabs {
   display: flex;
   gap: 8px;
@@ -219,6 +245,10 @@ input:disabled {
 
   .filter-tabs {
     flex-direction: column;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
 
   button {
