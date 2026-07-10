@@ -25,6 +25,12 @@ export class TaskService {
 
   }
 
+  getTaskStats() {
+
+    return this.http.get<any>(`${this.apiUrl}/stats`);
+
+  }
+
   createTask(task: { title: string; dueDate?: string }) {
 
     return this.http.post<any>(this.apiUrl, task);

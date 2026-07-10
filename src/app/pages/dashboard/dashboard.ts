@@ -20,11 +20,22 @@ export class Dashboard implements OnInit {
   message = '';
   errorMessage = '';
   titleError = '';
+  dueDateError = '';
+  minDueDate = this.getTodayDateString();
   isLoadingTasks = false;
   isCreatingTask = false;
   updatingTaskId = '';
   deletingTaskId = '';
   currentFilter = 'all';
+  taskStats: any = {
+    totalTasks: 0,
+    completedTasks: 0,
+    pendingTasks: 0,
+    overdueTasks: 0,
+    completionPercentage: 0
+  };
+  isLoadingStats = false;
+  statsErrorMessage = '';
 
   constructor(
     private taskService: TaskService,
@@ -35,6 +46,7 @@ export class Dashboard implements OnInit {
   ngOnInit() {
 
     this.getTasks();
+    this.getTaskStats();
 
   }
 
@@ -60,14 +72,21 @@ export class Dashboard implements OnInit {
 
   }
 
-  createTask() {
+  createTask(dueDateInput?: HTMLInputElement) {
 
     this.titleError = '';
+    this.dueDateError = '';
 
     if (!this.newTaskTitle.trim()) {
       this.message = '';
       this.titleError = 'Task title is required';
       this.errorMessage = 'Please enter a task title';
+      return;
+    }
+
+    if (!this.isDueDateValid(dueDateInput)) {
+      this.message = '';
+      this.errorMessage = 'Please provide a valid future due date.';
       return;
     }
 
@@ -83,10 +102,11 @@ export class Dashboard implements OnInit {
     this.taskService.createTask(task).subscribe({
       next: () => {
         this.isCreatingTask = false;
-        this.getTasks();
+        this.refreshDashboard();
         this.newTaskTitle = '';
         this.newTaskDueDate = '';
         this.titleError = '';
+        this.dueDateError = '';
         this.message = 'Task created';
         this.errorMessage = '';
       },
@@ -134,6 +154,7 @@ export class Dashboard implements OnInit {
           return currentTask;
         });
 
+        this.getTaskStats();
         this.message = 'Task updated';
         this.errorMessage = '';
       },
@@ -171,6 +192,7 @@ export class Dashboard implements OnInit {
         this.deletingTaskId = '';
         this.tasks = this.tasks.filter((currentTask) => this.getTaskId(currentTask) !== taskId);
 
+        this.getTaskStats();
         this.message = 'Task deleted';
         this.errorMessage = '';
       },
@@ -194,6 +216,89 @@ export class Dashboard implements OnInit {
     }
 
     return this.tasks;
+
+  }
+
+  validateDueDateInput(input: HTMLInputElement) {
+
+    this.isDueDateValid(input);
+
+  }
+
+  isDueDateValid(input?: HTMLInputElement) {
+
+    if (!this.newTaskDueDate) {
+      this.dueDateError = '';
+      return true;
+    }
+
+    if (input && !input.validity.valid) {
+      this.dueDateError = 'Please provide a valid future due date.';
+      return false;
+    }
+
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+
+    if (!datePattern.test(this.newTaskDueDate)) {
+      this.dueDateError = 'Please provide a valid future due date.';
+      return false;
+    }
+
+    const [year, month, day] = this.newTaskDueDate.split('-').map(Number);
+    const parsedDate = new Date(year, month - 1, day);
+    const isRealDate =
+      parsedDate.getFullYear() === year &&
+      parsedDate.getMonth() === month - 1 &&
+      parsedDate.getDate() === day;
+
+    if (!isRealDate || Number.isNaN(parsedDate.getTime())) {
+      this.dueDateError = 'Please provide a valid future due date.';
+      return false;
+    }
+
+    if (this.newTaskDueDate < this.minDueDate) {
+      this.dueDateError = 'Please provide a valid future due date.';
+      return false;
+    }
+
+    this.dueDateError = '';
+    return true;
+
+  }
+
+  getTodayDateString() {
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+
+  }
+
+  getTaskStats() {
+
+    this.isLoadingStats = true;
+    this.statsErrorMessage = '';
+
+    this.taskService.getTaskStats().subscribe({
+      next: (stats) => {
+        this.taskStats = stats;
+        this.isLoadingStats = false;
+      },
+      error: (error) => {
+        this.isLoadingStats = false;
+        this.statsErrorMessage = error.error?.message || 'Could not load task statistics';
+      }
+    });
+
+  }
+
+  refreshDashboard() {
+
+    this.getTasks();
+    this.getTaskStats();
 
   }
 

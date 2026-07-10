@@ -8,8 +8,9 @@
 
   <p class="message" *ngIf="message">{{ message }}</p>
   <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="error" *ngIf="statsErrorMessage">{{ statsErrorMessage }}</p>
 
-  <form class="task-form" (ngSubmit)="createTask()">
+  <form class="task-form" (ngSubmit)="createTask(taskDueDateInput)">
     <div class="task-fields">
       <div class="task-input-group">
         <label for="taskTitle">New task</label>
@@ -28,10 +29,15 @@
         <label for="taskDueDate">Due date (optional)</label>
         <input
           id="taskDueDate"
+          #taskDueDateInput
           type="date"
           [(ngModel)]="newTaskDueDate"
           name="newTaskDueDate"
+          [min]="minDueDate"
+          (input)="validateDueDateInput(taskDueDateInput)"
+          (blur)="validateDueDateInput(taskDueDateInput)"
         >
+        <small class="field-error" *ngIf="dueDateError">{{ dueDateError }}</small>
       </div>
     </div>
 
@@ -39,6 +45,35 @@
       {{ isCreatingTask ? 'Adding...' : 'Add Task' }}
     </button>
   </form>
+
+  <p class="loading" *ngIf="isLoadingStats">Loading statistics...</p>
+
+  <section class="stats-grid" *ngIf="!isLoadingStats">
+    <div class="stat-card">
+      <span>Total</span>
+      <strong>{{ taskStats.totalTasks }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Completed</span>
+      <strong>{{ taskStats.completedTasks }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Pending</span>
+      <strong>{{ taskStats.pendingTasks }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Overdue</span>
+      <strong>{{ taskStats.overdueTasks }}</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Completion</span>
+      <strong>{{ taskStats.completionPercentage }}%</strong>
+    </div>
+  </section>
 
   <p class="loading" *ngIf="isLoadingTasks">Loading tasks...</p>
 
