@@ -42,17 +42,20 @@ h2 {
 }
 
 input,
+select,
 button {
   padding: 10px;
   font-size: 14px;
   border-radius: 4px;
 }
 
-input {
+input,
+select {
   border: 1px solid #b8c0cc;
 }
 
-input:focus {
+input:focus,
+select:focus {
   border-color: #1c7ed6;
   outline: none;
 }

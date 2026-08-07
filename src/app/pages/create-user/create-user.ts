@@ -1,16 +1,15 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Auth } from '../../services/auth';
+import { UserService } from '../../services/user';
 
 @Component({
-  selector: 'app-signup',
-  imports: [CommonModule, RouterLink, FormsModule],
-  templateUrl: './signup.html',
-  styleUrl: './signup.css',
+  selector: 'app-create-user',
+  imports: [CommonModule, FormsModule],
+  templateUrl: './create-user.html',
+  styleUrl: './create-user.css'
 })
-export class Signup {
+export class CreateUser {
 
   name = '';
   email = '';
@@ -22,9 +21,9 @@ export class Signup {
   passwordError = '';
   isLoading = false;
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private userService: UserService) {}
 
-  onSignup() {
+  createUser() {
 
     this.nameError = '';
     this.emailError = '';
@@ -39,7 +38,7 @@ export class Signup {
     }
 
     if (!this.password.trim()) {
-      this.passwordError = 'Password is required';
+      this.passwordError = 'Temporary password is required';
     }
 
     if (this.nameError || this.emailError || this.passwordError) {
@@ -52,26 +51,23 @@ export class Signup {
     this.message = '';
     this.errorMessage = '';
 
-    const userData = {
-      name: this.name,
-      email: this.email,
-      password: this.password
-    };
-
-    this.auth.signup(userData).subscribe({
-      next: (response: any) => {
+    this.userService.createUser(
+      this.name,
+      this.email,
+      this.password
+    ).subscribe({
+      next: (user) => {
         this.isLoading = false;
-        this.message = response.message;
+        this.message = `User created: ${user.email}`;
         this.errorMessage = '';
-
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 1000);
+        this.name = '';
+        this.email = '';
+        this.password = '';
       },
       error: (error) => {
         this.isLoading = false;
         this.message = '';
-        this.errorMessage = error.error?.message || 'Signup failed';
+        this.errorMessage = error.error?.message || 'Could not create user';
       }
     });
 

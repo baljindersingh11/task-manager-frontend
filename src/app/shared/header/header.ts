@@ -19,6 +19,12 @@ export class Header {
 
   }
 
+  isManager() {
+
+    return this.auth.isManager();
+
+  }
+
   logout() {
 
     this.auth.logout();

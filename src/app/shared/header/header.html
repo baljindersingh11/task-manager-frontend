@@ -3,9 +3,9 @@
 
   <nav>
     <a *ngIf="!isLoggedIn()" routerLink="/login">Login</a>
-    <a *ngIf="!isLoggedIn()" routerLink="/signup">Signup</a>
     <a *ngIf="isLoggedIn()" routerLink="/dashboard">Dashboard</a>
     <a *ngIf="isLoggedIn()" routerLink="/profile">Profile</a>
+    <a *ngIf="isLoggedIn() && isManager()" routerLink="/create-user">Create User</a>
     <button *ngIf="isLoggedIn()" type="button" (click)="logout()">Logout</button>
   </nav>
 </header>

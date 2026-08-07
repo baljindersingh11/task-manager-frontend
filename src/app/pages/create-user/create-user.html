@@ -1,13 +1,13 @@
-<div class="auth-page">
-  <div class="auth-card">
-    <p class="eyebrow">Task Manager</p>
-    <h2>Create Account</h2>
-    <p class="auth-subtitle">Sign up to start organizing your tasks.</p>
+<div class="create-user-page">
+  <div class="create-user-card">
+    <p class="eyebrow">Manager</p>
+    <h2>Create User</h2>
+    <p class="subtitle">Create a regular user account with a temporary password.</p>
 
     <p class="message" *ngIf="message">{{ message }}</p>
     <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-    <form (ngSubmit)="onSignup()">
+    <form (ngSubmit)="createUser()">
       <div class="form-group">
         <label>Name</label>
         <input
@@ -33,10 +33,10 @@
       </div>
 
       <div class="form-group">
-        <label>Password</label>
+        <label>Temporary password</label>
         <input
           type="password"
-          placeholder="Enter password"
+          placeholder="Enter temporary password"
           [(ngModel)]="password"
           name="password"
           required
@@ -45,13 +45,8 @@
       </div>
 
       <button type="submit" [disabled]="isLoading">
-        {{ isLoading ? 'Creating account...' : 'Signup' }}
+        {{ isLoading ? 'Creating...' : 'Create User' }}
       </button>
     </form>
-
-    <p class="auth-link">
-      Already have an account?
-      <a routerLink="/login">Login</a>
-    </p>
   </div>
 </div>

@@ -1,25 +1,20 @@
-.auth-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+.create-user-page {
+  max-width: 520px;
+  margin: 32px auto;
+  padding: 0 20px;
   font-family: Arial, sans-serif;
-  background: #f6f7f9;
 }
 
-.auth-card {
-  width: 100%;
-  max-width: 420px;
+.create-user-card {
   padding: 28px;
   background: white;
-  border: 1px solid #ddd;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
   box-shadow: 0 12px 30px rgba(20, 32, 50, 0.08);
 }
 
 .eyebrow {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   color: #495057;
   font-size: 13px;
   font-weight: 700;
@@ -29,7 +24,7 @@ h2 {
   margin: 0;
 }
 
-.auth-subtitle {
+.subtitle {
   margin: 8px 0 20px;
   color: #5c6773;
 }
@@ -43,24 +38,21 @@ h2 {
 
 input,
 button {
-  padding: 10px;
+  min-height: 40px;
+  padding: 8px 12px;
   font-size: 14px;
-  border-radius: 4px;
 }
 
 input {
-  border: 1px solid #b8c0cc;
-}
-
-input:focus {
-  border-color: #1c7ed6;
-  outline: none;
+  border: 1px solid #bbb;
+  border-radius: 4px;
 }
 
 button {
   width: 100%;
-  border: 1px solid #1f2937;
   background: #1f2937;
+  border: 1px solid #1f2937;
+  border-radius: 4px;
   color: white;
   cursor: pointer;
 }
@@ -72,30 +64,20 @@ button:disabled {
 
 .message {
   padding: 10px;
+  color: #087f5b;
   background: #e6fcf5;
   border: 1px solid #96f2d7;
   border-radius: 4px;
-  color: #087f5b;
 }
 
 .error {
   padding: 10px;
+  color: #c92a2a;
   background: #fff5f5;
   border: 1px solid #ffc9c9;
   border-radius: 4px;
-  color: #c92a2a;
 }
 
 .field-error {
   color: #c92a2a;
-}
-
-.auth-link {
-  margin: 18px 0 0;
-  text-align: center;
-}
-
-a {
-  color: #1c7ed6;
-  font-weight: 700;
 }

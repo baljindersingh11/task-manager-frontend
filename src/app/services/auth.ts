@@ -13,15 +13,6 @@ export class Auth {
 
   private apiUrl = `${environment.apiUrl}/auth`;
 
-  signup(userData: any) {
-
-    return this.http.post(
-      `${this.apiUrl}/signup`,
-      userData
-    );
-
-  }
-
   login(credentials: any) {
 
     return this.http.post<any>(
@@ -46,6 +37,29 @@ export class Auth {
   isLoggedIn() {
 
     return !!this.getToken();
+
+  }
+
+  getRole() {
+
+    const token = this.getToken();
+
+    if (!token) {
+      return '';
+    }
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role || '';
+    } catch (error) {
+      return '';
+    }
+
+  }
+
+  isManager() {
+
+    return this.getRole() === 'manager';
 
   }
 

@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
 
 import { Login } from './pages/login/login';
-import { Signup } from './pages/signup/signup';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Profile } from './pages/profile/profile';
+import { CreateUser } from './pages/create-user/create-user';
 import { authGuard } from './guards/auth-guard';
+import { managerGuard } from './guards/role-guard';
 
 export const routes: Routes = [
 
@@ -21,7 +22,8 @@ export const routes: Routes = [
 
     {
         path: 'signup',
-        component: Signup
+        redirectTo: 'login',
+        pathMatch: 'full'
     },
 
     {
@@ -34,6 +36,12 @@ export const routes: Routes = [
         path: 'profile',
         component: Profile,
         canActivate: [authGuard]
+    },
+
+    {
+        path: 'create-user',
+        component: CreateUser,
+        canActivate: [authGuard, managerGuard]
     }
 
 ];
